@@ -18,7 +18,7 @@ public class MyjobService extends JobService {
     @Override
     public boolean onStartJob(JobParameters jobParameters){
 
-        Log.e(TAG,"job started    ");
+        Log.e(TAG, "Job " + jobParameters.getJobId() + " started");
         doBackgroundWork(jobParameters);
         return true;
     }
@@ -29,15 +29,15 @@ public class MyjobService extends JobService {
             public void run() {
                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
                 String currentTime = sdf.format(new Date()); // Lấy thời gian hiện tại
-                Log.e(TAG, "Current Time: " + currentTime);
-                Log.e(TAG,"job finished");
-                jobFinished(jobParameters, false);
+                Log.e(TAG, "Job " + jobParameters.getJobId() + " - Current Time: " + currentTime);
+                Log.e(TAG, "Job " + jobParameters.getJobId() + " finished");
+                jobFinished(jobParameters, jobCancelled);
             }
         }).start();
     }
     @Override
     public boolean onStopJob(JobParameters jobParameters){
-        Log.e(TAG,"job cancelled");
+        Log.e(TAG, "Job " + jobParameters.getJobId() + " cancelled");
         jobCancelled= true;
         return true;
     }
